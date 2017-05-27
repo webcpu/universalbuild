@@ -56,7 +56,7 @@ import Data.Semigroup ((<>))
 
 -- Main
 main :: IO ()
-main = createXcodeScheme =<< execParser opts where opts = info (options <**> helper) ( fullDesc <> progDesc "build iOS/watchOS universal/fat framework")
+main = createXcodeScheme =<< execParser opts where opts = info (options <**> helper) ( fullDesc <> progDesc "build iOS/tvOS universal/fat framework")
 
 -- Command-line interface
 data TSOption
