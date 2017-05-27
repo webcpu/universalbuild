@@ -5,9 +5,8 @@
 
 -----------------------------------------------------------------------------
 --
--- Universal Framework Builder
+-- universalbuild
 --
--- HaskellSwift 2016
 --
 -----------------------------------------------------------------------------
 
@@ -49,21 +48,17 @@ import           Control.Monad
 
 import           Text.Printf
 
-
 -- Third Party API
-import Options.Applicative
-import Data.Semigroup ((<>))
+import           Options.Applicative
+import           Data.Semigroup ((<>))
 
 -- Main
 main :: IO ()
 main = createXcodeScheme =<< execParser opts where opts = info (options <**> helper) ( fullDesc <> progDesc "build iOS/tvOS universal/fat framework")
 
 -- Command-line interface
-data TSOption
-  = SchemeOption String | TargetOption String
-
-data BUOptions
-  = BUOptions {
+data UBOptions
+  = UBOptions {
   _project       :: String,
   _scheme        :: String,
   _configuraiton :: String}
@@ -72,11 +67,11 @@ projectOption = strOption (long "project" <> short 'p' <> metavar "name.xcodepro
 schemeOption = strOption (long "scheme" <> short 's' <> metavar "schemename"  <> help "Build the scheme specified by schemename." )
 configuraitonOption = strOption (long "configuration" <> short 'c' <> metavar "configurationname" <> help "Use the build configuration specified by configurationname when building each target.")
 
-options :: Parser BUOptions
-options = BUOptions <$> projectOption <*> schemeOption <*> configuraitonOption
+options :: Parser UBOptions
+options = UBOptions <$> projectOption <*> schemeOption <*> configuraitonOption
 
-createXcodeScheme :: BUOptions -> IO ()
-createXcodeScheme (BUOptions projectname schemename configurationname) = do
+createXcodeScheme :: UBOptions -> IO ()
+createXcodeScheme (UBOptions projectname schemename configurationname) = do
   let xcodeScheme = XcodeScheme projectname schemename configurationname
   result <- build xcodeScheme
   case result of
@@ -205,7 +200,7 @@ commonSubstring xs ys = commonSubstring' (map fst zs) (map snd zs) where
     zs = zip xs ys
 commonSubstring' [] [] = []
 commonSubstring' (x:xs) (y:ys)
-    | x == y = x:commonSubstring' xs ys
+   | x == y = x:commonSubstring' xs ys
    | otherwise = []
 
 -----------------------------------------------------------------------------
@@ -252,10 +247,6 @@ copyDirectory :: String -> String -> IO ExitCode
 --copyDirectory src dst = cp ["-pR", src, dst]
 copyDirectory src dst = ditto [src, dst]
 
-copyDirectory1 :: String -> String -> IO ExitCode
---copyDirectory src dst = cp ["-pR", src, dst]
-copyDirectory1 src dst = ditto [src, dst]
-
 getFrameworkExecutablePaths :: String -> [String] -> [String]
 getFrameworkExecutablePaths executableName = map (</> executableName)
 
@@ -293,8 +284,9 @@ buildOptions optionSet = baseOptions optionSet ++ ["build"]
 
 -----------------------------------------------------------------------------
 -- | BuildSettings
+readBuildSettings :: XcodeScheme -> IO (ExitCode, String, String)
 readBuildSettings xcodeScheme = xcodebuild ["-project", project xcodeScheme,
-                                           "-showBuildSettings",
+                                            "-showBuildSettings",
                                      "-scheme", scheme xcodeScheme,
                                      "-configuration", configuration xcodeScheme]
 
