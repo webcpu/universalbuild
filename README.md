@@ -1,5 +1,5 @@
 # universalbuild
-build iOS universal/fat framework
+build iOS/tvOS universal/fat framework
 
 **Usage:**
 
