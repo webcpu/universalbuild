@@ -15,9 +15,9 @@ universalbuild (-p|--project name.xcodeproj) (-s|--scheme schemename)
 **Installation:**
 
 Download the latest binary release.
-https://github.com/unchartedworks/universalbuild/releases/download/v0.1.0.0/universalbuild-0.1.0.0.tar.bz2
+https://github.com/unchartedworks/universalbuild/releases
 
-    tar -xvjf ./universalbuild-0.1.0.0.tar.bz2
-    cd universalbuild-0.1.0.0
+    tar -xvjf ./universalbuild-0.1.1.tar.bz2
+    cd universalbuild-0.1.1
     ./install.sh
 
