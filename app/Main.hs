@@ -240,8 +240,20 @@ createBaseFramework frameworkPaths outputDirectory = do
     let baseFrameworkDirectory = head frameworkPaths
     let outputFrameworkDirectory = outputDirectory </> takeFileName baseFrameworkDirectory
     createDirectoryIfMissing False outputFrameworkDirectory
+    r <- copyDirectory baseFrameworkDirectory outputFrameworkDirectory
+    rs <- mapM (copySwiftModule outputDirectory) frameworkPaths
     putStrLn outputFrameworkDirectory
-    copyDirectory baseFrameworkDirectory outputFrameworkDirectory
+    let result = if all (\x -> x == ExitSuccess) (rs ++ [r]) then ExitSuccess else (ExitFailure 1)
+    return result
+
+copySwiftModule :: String -> String -> IO ExitCode
+copySwiftModule outputDirectory frameworkPath = do
+  let frameworkBaseName = takeBaseName frameworkPath
+  let frameworkName = takeFileName frameworkPath
+  let src = frameworkPath </> "Modules/" <> frameworkBaseName <> ".swiftmodule"
+  let dst = outputDirectory </> frameworkName </> "Modules/" <> frameworkBaseName <> ".swiftmodule"
+  copyDirectory src dst
+
 
 copyDirectory :: String -> String -> IO ExitCode
 --copyDirectory src dst = cp ["-pR", src, dst]

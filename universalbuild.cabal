@@ -1,5 +1,5 @@
 name:                universalbuild
-version:             0.1.0.0
+version:             0.1.1
 synopsis:            build iOS/watchOS universal/fat framework
 description:         build iOS/watchOS universal/fat framework
 homepage:            https://github.com/githubuser/universalbuild#readme
