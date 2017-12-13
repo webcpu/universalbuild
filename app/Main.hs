@@ -128,7 +128,7 @@ getSupportedPlatforms xcodeScheme = do
 
 getSupportedPlatforms' :: (MonadError (BuildError String) m) => XcodeScheme -> (ExitCode, String, String) -> m [String]
 getSupportedPlatforms' xcodeScheme (ExitSuccess, output, error) = case value of
-    Just xs -> return $ reverse $ words xs
+    Just xs -> return $ List.sort $ words xs
     Nothing -> throwError $ CreateBuildOptionSetsNoneSupportedPlatformsError ("scheme = " ++ error)
     where value = lookupBuildSettings "SUPPORTED_PLATFORMS" output
 getSupportedPlatforms' xcodeScheme (_, output, error) = throwError $ CreateBuildOptionSetsNoneSupportedPlatformsError (debugInfo xcodeScheme ++ " , " ++ error)
