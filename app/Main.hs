@@ -114,7 +114,8 @@ createBuildOptionSets :: XcodeScheme -> IO (Either (BuildError String) [Xcodebui
 createBuildOptionSets xcodeScheme = getSupportedPlatforms xcodeScheme >>>= createBuildOptionSets' xcodeScheme
 
 createBuildOptionSets' :: XcodeScheme -> [String] -> IO (Either (BuildError String) [XcodebuildOptionSet])
-createBuildOptionSets' xcodeScheme platforms = return $ Right (map (createBuildOptionSet (project xcodeScheme) (scheme xcodeScheme) (configuration xcodeScheme)) platforms)
+createBuildOptionSets' xcodeScheme platforms =
+    return $ Right (map (createBuildOptionSet (project xcodeScheme) (scheme xcodeScheme) (configuration xcodeScheme)) platforms)
 
 createBuildOptionSet :: String -> String -> String -> String -> XcodebuildOptionSet
 createBuildOptionSet project scheme configuration platform = XcodebuildOptionSet project scheme platform configuration
@@ -127,7 +128,7 @@ getSupportedPlatforms xcodeScheme = do
 
 getSupportedPlatforms' :: (MonadError (BuildError String) m) => XcodeScheme -> (ExitCode, String, String) -> m [String]
 getSupportedPlatforms' xcodeScheme (ExitSuccess, output, error) = case value of
-    Just xs -> return $ words xs
+    Just xs -> return $ reverse $ words xs
     Nothing -> throwError $ CreateBuildOptionSetsNoneSupportedPlatformsError ("scheme = " ++ error)
     where value = lookupBuildSettings "SUPPORTED_PLATFORMS" output
 getSupportedPlatforms' xcodeScheme (_, output, error) = throwError $ CreateBuildOptionSetsNoneSupportedPlatformsError (debugInfo xcodeScheme ++ " , " ++ error)
