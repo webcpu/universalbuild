@@ -22,3 +22,6 @@ https://github.com/unchartedworks/universalbuild/releases/download/v0.1.1/univer
     cd universalbuild-0.1.1
     ./install.sh
 
+**More**
+
+https://github.com/unchartedworks/universalbuild/blob/master/app/Main.hs
