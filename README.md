@@ -16,12 +16,12 @@ universalbuild (-p|--project name.xcodeproj) (-s|--scheme schemename)
 
 Download the latest binary release.
 
-https://github.com/unchartedworks/universalbuild/releases/download/v0.1.1/universalbuild-0.1.1.tar.bz2
+https://github.com/webcpu/universalbuild/releases/download/v1.2/universalbuild-1.2.zip
 
-    tar -xvjf ./universalbuild-0.1.1.tar.bz2
-    cd universalbuild-0.1.1
+    unzip ./universalbuild-1.2.zip
+    cd universalbuild-1.2
     ./install.sh
 
 **More**
 
-https://github.com/unchartedworks/universalbuild/blob/master/app/Main.hs
+https://github.com/webcpu/universalbuild/blob/master/app/Main.hs
